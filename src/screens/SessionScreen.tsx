@@ -18,6 +18,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Platform,
 } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/auth';
@@ -81,26 +82,29 @@ const SessionScreen: React.FC<Props> = ({ route, navigation }) => {
   // ── Logout handler ────────────────────────────────────────────────
 
   const handleLogout = useCallback(async () => {
-    Alert.alert('Logout', 'Are you sure you want to logout?', [
-      { text: 'Cancel', style: 'cancel' },
-      {
-        text: 'Logout',
-        style: 'destructive',
-        onPress: async () => {
-          // Stop the session timer (also clears persisted session)
-          stopTimer();
+    const doLogout = async () => {
+      // Stop the session timer (also clears persisted session)
+      stopTimer();
 
-          // Log the analytics event
-          await analyticsService.logEvent('logout', email);
+      // Log the analytics event
+      await analyticsService.logEvent('logout', email);
 
-          // Navigate back to Login and reset the stack
-          navigation.reset({
-            index: 0,
-            routes: [{ name: 'Login' }],
-          });
-        },
-      },
-    ]);
+      // Navigate back to Login and reset the stack
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login' }],
+      });
+    };
+
+    if (Platform.OS === 'web') {
+      const confirmed = window.confirm('Are you sure you want to logout?');
+      if (confirmed) await doLogout();
+    } else {
+      Alert.alert('Logout', 'Are you sure you want to logout?', [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Logout', style: 'destructive', onPress: doLogout },
+      ]);
+    }
   }, [email, navigation, stopTimer]);
 
   return (

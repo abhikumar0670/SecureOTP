@@ -23,6 +23,16 @@ import {
   Platform,
   Alert,
 } from 'react-native';
+
+/** Cross‑platform alert that works on web too. */
+const showAlert = (title: string, message: string, onDismiss?: () => void) => {
+  if (Platform.OS === 'web') {
+    window.alert(`${title}\n\n${message}`);
+    onDismiss?.();
+  } else {
+    Alert.alert(title, message, [{ text: 'OK', onPress: onDismiss }]);
+  }
+};
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/auth';
 import { otpManager } from '../services/otpManager';
@@ -49,7 +59,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     const trimmedEmail = email.trim().toLowerCase();
 
     if (!isEmailValid) {
-      Alert.alert('Invalid Email', 'Please enter a valid email address.');
+      showAlert('Invalid Email', 'Please enter a valid email address.');
       return;
     }
 
@@ -68,17 +78,14 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
       // Show OTP in development for easy testing
       if (__DEV__) {
-        Alert.alert('DEV: OTP Generated', `Your OTP is: ${code}`, [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('Otp', { email: trimmedEmail }),
-          },
-        ]);
+        showAlert('DEV: OTP Generated', `Your OTP is: ${code}`, () => {
+          navigation.navigate('Otp', { email: trimmedEmail });
+        });
       } else {
         navigation.navigate('Otp', { email: trimmedEmail });
       }
     } catch (error) {
-      Alert.alert('Error', 'Failed to generate OTP. Please try again.');
+      showAlert('Error', 'Failed to generate OTP. Please try again.');
       console.error('[LoginScreen] handleSendOtp error:', error);
     } finally {
       setLoading(false);
@@ -92,7 +99,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
     >
       <View style={styles.card}>
         {/* Header */}
-        <Text style={styles.logo}>🔐</Text>
+        <Text style={styles.logo}>OTP</Text>
         <Text style={styles.title}>SecureOTP</Text>
         <Text style={styles.subtitle}>Enter your email to receive a one‑time password</Text>
 
@@ -149,8 +156,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    fontSize: 48,
-    marginBottom: 8,
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    backgroundColor: '#4F46E5',
+    width: 56,
+    height: 56,
+    lineHeight: 56,
+    borderRadius: 28,
+    textAlign: 'center',
+    overflow: 'hidden',
+    marginBottom: 12,
   },
   title: {
     fontSize: 28,

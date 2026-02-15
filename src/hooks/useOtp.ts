@@ -90,16 +90,16 @@ export const useOtp = (email: string): UseOtpReturn => {
     const result: OtpValidationResult = otpManager.validateOtp(email, otpInput);
 
     if (result.success) {
-      setMessage('✅ OTP verified successfully!');
+      setMessage('OTP verified successfully!');
       setVerified(true);
       await analyticsService.logEvent('otp_validation_success', email);
     } else {
       // Map failure reasons to user‑friendly messages
       const reasonMessages: Record<string, string> = {
-        expired: '⏰ OTP has expired. Please resend.',
-        incorrect: '❌ Incorrect OTP. Please try again.',
-        max_attempts: '🚫 Maximum attempts exceeded. Please resend OTP.',
-        no_otp: '⚠️ No OTP found. Please go back and request one.',
+        expired: 'OTP has expired. Please resend.',
+        incorrect: 'Incorrect OTP. Please try again.',
+        max_attempts: 'Maximum attempts exceeded. Please resend OTP.',
+        no_otp: 'No OTP found. Please go back and request one.',
       };
       setMessage(reasonMessages[result.reason]);
       setRemainingAttempts(otpManager.getRemainingAttempts(email));
@@ -120,7 +120,7 @@ export const useOtp = (email: string): UseOtpReturn => {
 
     // Reset local state
     setOtpInput('');
-    setMessage(`🔄 New OTP sent! (DEV: ${newCode})`);
+    setMessage(`New OTP sent! (DEV: ${newCode})`);
     setRemainingAttempts(3);
     startCountdown();
 

@@ -67,7 +67,7 @@ const OtpScreen: React.FC<Props> = ({ route, navigation }) => {
     >
       <View style={styles.card}>
         {/* Header */}
-        <Text style={styles.logo}>✉️</Text>
+        <Text style={styles.logo}>OTP</Text>
         <Text style={styles.title}>Enter OTP</Text>
         <Text style={styles.subtitle}>
           We sent a 6‑digit code to{'\n'}
@@ -149,8 +149,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   logo: {
-    fontSize: 48,
-    marginBottom: 8,
+    fontSize: 22,
+    fontWeight: '700',
+    color: '#FFFFFF',
+    backgroundColor: '#4F46E5',
+    width: 56,
+    height: 56,
+    lineHeight: 56,
+    borderRadius: 28,
+    textAlign: 'center',
+    overflow: 'hidden',
+    marginBottom: 12,
   },
   title: {
     fontSize: 24,
