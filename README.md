@@ -25,7 +25,7 @@ A local-only OTP authentication demo built with **Expo**, **TypeScript**, and **
 
 ```bash
 # Clone the repository
-git clone https://github.com/<your-username>/SecureOTP.git
+git clone https://github.com/abhikumar0670/SecureOTP.git
 cd SecureOTP
 
 # Install dependencies
