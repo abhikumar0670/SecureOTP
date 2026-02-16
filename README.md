@@ -2,6 +2,8 @@
 
 A local-only OTP authentication demo built with **Expo**, **TypeScript**, and **React Navigation**. No backend required — all OTP generation, validation, and session management happens on-device.
 
+### 📲 [Download APK](https://expo.dev/accounts/abhishek180/projects/SecureOTP/builds/7590b590-146a-447f-8570-a6cc9d68c159)
+
 ---
 
 ## Table of Contents
